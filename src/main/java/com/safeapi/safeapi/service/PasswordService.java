@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class PasswordService {
@@ -13,7 +14,10 @@ public class PasswordService {
         ArrayList<String> faillures = new ArrayList<>();
 
         checkLength(pass, faillures);
-        checkCapitalKey(pass, faillures);
+        checkUpperCase(pass, faillures);
+        checkLowerCase(pass, faillures);
+        checkNumber(pass, faillures);
+        checkSpecialCharacter(pass, faillures);
 
 
 
@@ -26,24 +30,34 @@ public class PasswordService {
         if(pass.length() <= 8){
             listFaills.add("A senha deve possuir pelo menos 8 caracteres.");
             System.out.println("print função checkLength. resultado: " + listFaills);
+        }
+
+    }
+
+    private void checkUpperCase(String pass, List<String> listFaills){
+        if(!Pattern.matches(".*[A-Z].*", pass)){
+            listFaills.add("A senha deve possuir pelo menos uma letra maiúscula");
         }else{
-            System.out.println("Não entrou no if");
+            System.out.println("Não entrou no if 1");
         }
-
     }
 
-    public void checkCapitalKey(String pass, List<String> listFaills){
-        boolean isCapital = false;
-
-        for(int i=0; i<pass.length(); i++){
-            if(Character.isUpperCase(pass.charAt(i))){
-                isCapital = true;
-                break;
-            }
+    private void checkLowerCase(String pass, List<String> listFails){
+        if(!(Pattern.matches(".*[a-z].*", pass))) {
+            listFails.add("A senha deve conter pelo menos uma letra minúscula.");
+        }else{
+            System.out.println("Não entrou no if 2");
         }
-        if(!isCapital) {
-            listFaills.add("a senha deve conter pelo menos uma letra maiúscula.");
-        }
-        System.out.println("print da função checkCapitalKey. resultado: " + listFaills);
     }
+    private void checkNumber(String pass, List<String> listFails){
+        if(!Pattern.matches(".*[0-9].*", pass)){
+            listFails.add("A senha conter pelo menos um dígito numérico.");
+        }
+    }
+    private void checkSpecialCharacter(String pass, List<String> listFails){
+        if(!Pattern.matches(".*[\\W].*", pass)){
+            listFails.add("A senha conter pelo menos um caractere especial (e.g, !@#$%).");
+        }
+    }
+
 }

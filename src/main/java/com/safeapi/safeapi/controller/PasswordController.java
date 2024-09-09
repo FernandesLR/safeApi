@@ -14,13 +14,14 @@ public class PasswordController {
 
     @PostMapping("/password-validate")
     public ResponseEntity<String> validatePassword(@RequestBody BodyRequest request) { // instancia um objeto e passa para um record para facilitar a manipulação dos dados.
-        System.out.println(request);
+
         var faills = passService.validatePass(request.password()); // passa para um método principal que vai validar a senha
+
         if(faills.isEmpty()){
-            return ResponseEntity.ok(faills.toString());
+            return ResponseEntity.ok().build();
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(faills.toString());
     }
 
 }
